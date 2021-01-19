@@ -1,0 +1,208 @@
+<div class="bar-container form-group mt-3">
+    <div>
+        <a routerLink="/dashboard/albums">
+            <i class="fa fa-angle-left fa-2x fa-gray" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div>
+        <h4>All Songs</h4>
+    </div>
+    <div>
+        <a routerLink="/dashboard/playlist">
+            <i class="fa fa-music fa-lg fa-gray" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+
+<div class="form-group mt-3">
+    <div id="input-container">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <input style="border: none;" type="text" id="search-text" class="form-control" name="searchText"
+            autocomplete="off" aria-describedby="search-text" [(ngModel)]="searchText"
+            placeholder="Enter text to search" autofocus>
+    </div>
+</div>
+
+<hr>
+
+<div class="flex-bar mb-3">
+    <div>
+        <a class="btn btn-link" (click)="openFilter(myFilter)">
+            <i class="fa fa-filter fa-lg fa-blue" aria-hidden="true"></i> Filter
+        </a>
+    </div>
+    <div>
+        <a class="btn btn-link" (click)="openSort(mySort)">
+            <i class="fa fa-sort fa-lg fa-blue" aria-hidden="true"></i> Sort
+        </a>
+    </div>
+    <div>
+        <a class="btn btn-link" (click)="onClear()">
+            <i class="fa fa-refresh fa-lg fa-blue" aria-hidden="true"></i> Refresh
+        </a>
+    </div>
+</div>
+
+<div *ngIf="isMessage" id="hideMe" class="alert alert-info mt-3" role="alert">
+    Item not found!
+</div>
+
+<div class="form-group">
+    <p class="pl-1">{{MessageFilter}}</p>
+</div>
+
+<section class="cards">
+    <article class="card" *ngFor="let song of songs | filterAll: searchText; let i=index">
+        <img class="card-img-top" src="{{song.Photo}}" alt="card image">
+        <div class="card-body">
+            <h5 class="card-title">{{song.Name}}</h5>
+            <p class="card-text">{{song.Song}}&nbsp;({{song.Created}})</p>
+            <a class="card-link"><i class="fa fa-heart" aria-hidden="true"></i></a>
+            <a *ngIf="playlists.length>0" [popover]="popTemplate" [popoverContext]="context" [outsideClick]="true"
+                class="card-link"><i class="fa fa-share" aria-hidden="true"></i></a>
+            <a class="card-link btn-play" (click)="open(mymodal, song, i)">
+                <!--(click)="onPlay(song.MusicFile, i)"-->
+                <i class="fa fa-play" [ngClass]="{'color-red': isShow[i], 'color-blue': !isShow[i]}"
+                    aria-hidden="true"></i>
+            </a>
+        </div>
+        <ng-template #popTemplate>
+            <ul>
+                <li *ngFor="let play of playlists">
+                    <a class="item-share" (click)="onAddSongToPlaylist(play, song)">{{play.Name}}</a>
+                </li>
+            </ul>
+        </ng-template>
+    </article>
+
+    <ng-template #myFilter let-modal>
+        <div class="modal-content modal-filter">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title"><i class="fa fa-filter" aria-hidden="true"></i> Filter
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="filterForm" (ngSubmit)="onFilter()">
+                    <div class="row pr-3 pl-3">
+                        <div class="form-group col-md-12 col-xs-12">
+                            <label for="artist-text">Artist</label>
+                            <select class="form-control" id="artist-text" formControlName="Name"
+                                (change)="onChangeArtist($event.target.value)">
+                                <option value="">Choose Artist</option>
+                                <option *ngFor="let song of artists" [value]="song.Name">
+                                    {{song.Name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12 col-xs-12">
+                            <label for="created-text">Created</label>
+                            <select class="form-control" id="created-text" formControlName="Created">
+                                <option value="">Choose Created</option>
+                                <option [value]="song" *ngFor="let song of createds">
+                                    {{song}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12 col-xs-12 pt-4">
+                            <button type="submit" [disabled]="loading" class="btn btn-primary">Save Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link btn-gray" (click)="modal.close('Save click')">Close</a>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #mySort let-modal>
+        <div class="modal-content modal-sort">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title"><i class="fa fa-sort" aria-hidden="true"></i> Sort</h4>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="sortForm" (ngSubmit)="onSort()" novalidate>
+                    <div class="row pr-3 pl-3">
+                        <div class="form-group col-md-12 col-xs-12" *ngFor="let control of sortsArray.controls; let i=index">
+                            <label>
+                                <input type="checkbox" [formControl]="control" (change)="getSelectedSortValues()" />
+                                &nbsp;<span>{{sortArray[i]}}</span>
+                            </label>
+                        </div>
+                        <p class="error" *ngIf="this.sortForm.controls['CheckArray'].errors?.required">
+                            Checkbox is required, select atleast one value.
+                        </p>
+                    </div>
+                    <div class="form-group col-md-12 col-xs-12 pt-4">
+                        <button type="submit" [disabled]="loading" class="btn btn-primary">Save Sort</button>
+                    </div>
+
+                    <!--
+                        (change)="onCheckboxChange($event)"
+                    <div class="row pr-3 pl-3">
+                        <div class="form-group col-md-12 col-xs-12">
+                            <label for="artist-radio">
+                                <input type="radio" id="artist-radio" formControlName="RadioSort" name="RadioSort"
+                                    value="Name">&nbsp;<span>Artist</span>
+                            </label>
+                        </div>
+                        <div class="form-group col-md-12 col-xs-12">
+                            <label for="created-radio">
+                                <input type="radio" id="created-radio" formControlName="RadioSort" name="RadioSort"
+                                    value="Created">&nbsp;<span>Created</span>
+                            </label>
+                        </div>
+                        <div class="form-group col-md-12 col-xs-12 pt-4">
+                            <button type="submit" [disabled]="loading" class="btn btn-primary"><i class="fa fa-sort"
+                                    aria-hidden="true"></i>&nbsp;Save Sort</button>&nbsp;
+                        </div>
+                    </div>
+                    -->
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link btn-gray" (click)="modal.close('Save click')">Close</a>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #mymodal let-modal>
+        <div class="modal-content modal-player">
+            <div class="modal-header">
+                <img src="{{currentSong.Photo}}" alt="">
+
+                <a class="close close-player" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <div class="player-tools">
+                    <a class="back-left" (click)="onPrev(currentSong.Id)"><i
+                            class="fa fa-angle-double-left fa-2x fa-white" aria-hidden="true"></i></a>
+                    <a class="back-right" (click)="onNext(currentSong.Id)"><i
+                            class="fa fa-angle-double-right fa-2x fa-white" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h4>{{currentSong.Name}}</h4>
+                <p>{{currentSong.Song}} ({{currentSong.Created}})</p>
+                <!--<a class="btn btn-link" (click)="modal.close('Save click')">Close</a>-->
+            </div>
+
+            <figure>
+                <audio autoplay controls src="{{currentSong.MusicFile}}" type="audio/mp3"></audio>
+            </figure>
+        </div>
+    </ng-template>
+    <!--
+    <div class="row">
+        <div class="col-md-8">
+            <div class="audio-control" *ngIf="isPlay">
+                <figure>
+                    <audio autoplay controls src="{{currentSong}}" type="audio/mp3"></audio>
+                </figure>
+            </div>
+        </div>
+    </div>
+    -->
+</section>

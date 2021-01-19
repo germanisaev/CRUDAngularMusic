@@ -1,0 +1,53 @@
+<div class="component-container">
+    <div class="bar-container mt-3">
+        <div class="mt-1">
+            <a routerLink="/dashboard/playlist">
+                <i class="fa fa-angle-left fa-2x fa-gray" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div>
+            <h4>My Playlist Songs</h4>
+        </div>
+    </div>
+    <!--
+    <h2 class="mt-3">My Playlist Songs</h2>
+    <a routerLink="/dashboard/playlist">
+        <i class="fa fa-angle-left fa-2x" aria-hidden="true"></i>
+    </a>
+    -->
+    <div class="form-group mt-3">
+        <div id="input-container">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input style="border: none;" type="text" id="search-text" class="form-control" name="searchText"
+                aria-describedby="search-text" [(ngModel)]="searchText" placeholder="Enter text to search" autofocus>
+        </div>
+    </div>
+    <hr>
+
+    
+    <section class="cards">
+        <article class="card" *ngFor="let song of songsPlaylist | filterAll: searchText; let i=index">
+            <img class="card-img-top" src="{{song.Photo}}" alt="card image">
+            <div class="card-body">
+                <h5 class="card-title">{{song.Name}}</h5>
+                <p class="card-text">{{song.Song}}</p>
+                <a class="card-link" (click)="isLike = !isLike"><i class="fa fa-heart" aria-hidden="true"
+                        [ngClass]="{'color-red':isLike,'color-gray':!isLike}"></i></a>
+                <a class="card-link" (click)="onDelete(song.Id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                <a class="card-link btn-play" (click)="onPlay(song.MusicFile, i)">
+                    <i class="fa fa-play" [ngClass]="{'color-red': isShow[i], 'color-blue': !isShow[i]}"
+                        aria-hidden="true"></i>
+                </a>
+            </div>
+        </article>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="audio-control" *ngIf="isPlay">
+                    <figure>
+                        <audio autoplay controls src="{{currentSong}}" type="audio/mp3"></audio>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

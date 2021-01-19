@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>YnetMusic</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!--
+  <link rel="stylesheet" href="./assets/library/css/font-awesome/css/all.css">
+  <link href="./assets/library/css/font-awesome/css/fontawesome.css" rel="stylesheet">
+  <link href="./assets/library/css/font-awesome/css/brands.css" rel="stylesheet">
+  <link href="./assets/library/css/font-awesome/css/regular.css" rel="stylesheet">
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/brands.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/regular.min.css" rel="stylesheet">
+  -->
+</head>
+
+<body>
+  <app-root></app-root>
+  <!--
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    -->
+  <!-- jQuery library -->
+  <script src="./assets/library/jquery.min.js"></script>
+  
+  <!-- Popper JS -->
+  <script src="./assets/library/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="./assets/library/bootstrap.min.js"></script>
+  <!--
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/fontawesome.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/brands.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/regular.min.js"></script>
+  -->
+  <script>
+    $(document).ready(function () {
+        $(document).click(function (event) {
+          var click = $(event.target);
+          var _open = $(".navbar-collapse").hasClass("show");
+          if (_open === true && !click.hasClass("navbar-toggler")) {
+            $(".navbar-toggler").click();
+          }
+        });
+      });
+    /*
+    $(document).click(function (e) {
+        if (!$(e.target).is('.navbar-nav>li>a')) {
+          $('.navbar-collapse').collapse('hide');
+        }
+      });
+      */
+    /*
+    $(document).ready(function () {
+        $(document).click(function (event) {
+          var clickOver = $(event.target);
+          var _opened = $(".navbar-collapse").hasClass("navbar-collapse in");
+          if (_opened === true && !clickOver.hasClass("navbar-toggle")) {
+            $("button.navbar-toggle").click();
+          }
+        });
+      });
+      */
+    /*
+    $(document).ready(function () {
+      $('.navbar-nav>li>a').on('click', function () {
+        $('.navbar-collapse').collapse('hide');
+      });
+    });
+    */
+  </script>
+  <!--
+  <script>
+    $(document).ready(function() {
+      $(".sidebar-dropdown > a").click(function () {
+        $(".sidebar-submenu").slideUp(200);
+        if (
+          $(this)
+            .parent()
+            .hasClass("active")
+        ) {
+          $(".sidebar-dropdown").removeClass("active");
+          $(this)
+            .parent()
+            .removeClass("active");
+        } else {
+          $(".sidebar-dropdown").removeClass("active");
+          $(this)
+            .next(".sidebar-submenu")
+            .slideDown(200);
+          $(this)
+            .parent()
+            .addClass("active");
+        }
+      });
+
+      $("#close-sidebar").click(function () {
+        $(".page-wrapper").removeClass("toggled");
+      });
+      $("#show-sidebar").click(function () {
+        $(".page-wrapper").addClass("toggled");
+      });
+    });
+  </script>
+  -->
+</body>
+
+</html>

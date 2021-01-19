@@ -1,0 +1,21 @@
+<h4 class="text-center mt-3">{{title}}</h4>
+
+<div class="form-group">
+    <div id="input-container">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <input style="border: none;" type="text" id="search-text" class="form-control" name="searchText"
+            aria-describedby="search-text" [(ngModel)]="searchText" placeholder="Enter text to search" autofocus>
+    </div>
+</div>
+<hr>
+<section class="cards">
+    <article class="card" *ngFor="let album of albums | filterAll: searchText">
+        <img class="card-img-top" src="{{album.Photo}}" alt="card image">
+        <div class="card-body">
+            <h5 class="card-title">{{album.Artist}}</h5>
+            <p class="card-text">{{album.Album}} ({{album.Created}}) 
+                <a [routerLink]="['/dashboard/songs/', album.Id]" class="btn btn-link btn-right">
+                    <i class="fa fa-angle-right fa-2x" aria-hidden="true"></i></a></p>
+        </div>
+    </article>
+</section>
