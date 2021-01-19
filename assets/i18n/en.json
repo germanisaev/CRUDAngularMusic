@@ -1,0 +1,19 @@
+{
+    "header": {
+        "title": "ynet music box",
+        "slogan": "",
+        "home": "home",
+        "logout": "logout"
+    },
+    "content": {
+        "addList": "Add PlayList",
+        "removeList": "Remove PlayList",
+        "addSong": "Add Song",
+        "removeSong": "Remove Song",
+        "login": "LogIn",
+        "SignUp": "SignUp"
+    },
+    "footer": {
+        "title": "Copyright 2020 Ynet News. All Rights Reserved."
+    }
+}
